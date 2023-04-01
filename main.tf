@@ -8,8 +8,8 @@ terraform {
     }
   }
 }
-provider "azurerm"{
-    features{}
+provider "azurerm" {
+  features {}
 }
 resource "azurerm_resource_group" "devtestlab" {
   name     = "devtestlab-${var.DEVTEST_ID}-rg"
@@ -39,7 +39,7 @@ resource "azurerm_network_security_group" "example" {
   location            = azurerm_resource_group.devtestlab.location
   resource_group_name = azurerm_resource_group.devtestlab.name
 
-    security_rule {
+  security_rule {
     name                       = "Allow SSH From Trusted IP"
     priority                   = 100
     direction                  = "Inbound"
@@ -47,7 +47,7 @@ resource "azurerm_network_security_group" "example" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "${var.ALLOWED_IP}"
+    source_address_prefix      = var.ALLOWED_IP
     destination_address_prefix = "*"
   }
 }
