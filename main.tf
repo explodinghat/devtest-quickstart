@@ -1,12 +1,13 @@
 terraform {
+  required_version = ">= 1.3"
+  backend "azurerm" {}
   required_providers {
-    random = {
-      source = "hashicorp/random"
-      version = "3.4.3"
+    azurerm = {
+      version = "~>3.2"
+      source  = "hashicorp/azurerm"
     }
   }
 }
-
 provider "azurerm"{
     features{}
 }
