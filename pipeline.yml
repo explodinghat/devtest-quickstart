@@ -43,7 +43,7 @@ steps:
       command: 'custom'
       customCommand: 'plan'
       outputTo: 'file'
-      fileName: 'plan'
+      fileName: '$(TF_VAR_DEVTEST_ID)-plan'
       environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
     
   - task: PublishBuildArtifacts@1
