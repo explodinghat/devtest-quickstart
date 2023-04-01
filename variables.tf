@@ -4,3 +4,9 @@ variable "DEVTEST_ID" {
 variable "ALLOWED_IP" {
   type = string
 }
+variable "VNET_ADDR" {
+  type = string
+}
+variable "SUBNET_ADDR" {
+  type = string
+}
