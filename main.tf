@@ -38,7 +38,6 @@ resource "azurerm_dev_test_virtual_network" "example" {
   name                = "devtestlab-${var.DEVTEST_ID}-VNET"
   lab_name            = azurerm_dev_test_lab.example.name
   resource_group_name = azurerm_resource_group.devtestlab.name
-  address_space       = ["10.0.0.0/16"]
 
   subnet {
     use_public_ip_address           = "Allow"
