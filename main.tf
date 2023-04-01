@@ -40,7 +40,7 @@ resource "azurerm_network_security_group" "example" {
   resource_group_name = azurerm_resource_group.devtestlab.name
 
   security_rule {
-    name                       = "Allow SSH From Trusted IP"
+    name                       = "Allow_SSH"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
