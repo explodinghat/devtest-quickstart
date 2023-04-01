@@ -34,13 +34,21 @@ resource "azurerm_dev_test_policy" "example" {
   threshold           = "5"
   evaluator_type      = "MaxValuePolicy"
 }
-resource "azurerm_dev_test_virtual_network" "example" {
-  name                = "devtestlab-${var.DEVTEST_ID}-VNET"
-  lab_name            = azurerm_dev_test_lab.example.name
+resource "azurerm_network_security_group" "example" {
+  name                = "devtestlab-${var.DEVTEST_ID}-nsg"
+  location            = azurerm_resource_group.devtestlab.location
   resource_group_name = azurerm_resource_group.devtestlab.name
+}
+
+resource "azurerm_virtual_network" "example" {
+  name                = "devtestlab-${var.DEVTEST_ID}-vnet"
+  location            = azurerm_resource_group.devtestlab.location
+  resource_group_name = azurerm_resource_group.devtestlab.name
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["8.8.8.8"]
 
   subnet {
-    use_public_ip_address           = "Allow"
-    use_in_virtual_machine_creation = "Allow"
+    name           = "devtestlab-${var.DEVTEST_ID}-subnet1"
+    address_prefix = "10.0.0.0/24"
   }
 }
