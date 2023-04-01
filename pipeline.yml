@@ -1,0 +1,73 @@
+---
+parameters:
+- name: plan
+  displayName: "Select to plan changes"
+  type: boolean
+  default: true
+
+- name: apply
+  displayName: "Select me to apply changes"
+  type: boolean
+  default: false
+
+- name: destroy
+  displayName: "Select me to destroy the infrastructure (and universe)"
+  type: boolean 
+  default: false 
+
+variables:
+  TF_VAR_DEVTEST_ID: "casper"
+  TF_VAR_VNET: "10.0.0.0/24"
+  TF_VAR_SUBNET: "10.0.0.0/24"
+
+name: Terraform Azure
+trigger: none
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.3.9'
+    terraformDownloadLocation: 'https://releases.hashicorp.com/terraform'
+    
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+    backendAzureRmResourceGroupName: 'phoenixtech-tfstate-rg'
+    backendAzureRmStorageAccountName: 'mwtfstateyqpqj'
+    backendAzureRmContainerName: 'core-tfstate'
+    backendAzureRmKey: '$(TF_VAR_DEVTEST_ID)/terraform.state'
+
+- ${{ if eq(parameters['plan'], true)}}:
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'custom'
+      customCommand: 'plan'
+      outputTo: 'file'
+      fileName: 'plan'
+      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+    
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.SourcesDirectory)/$(TF_VAR_DEVTEST_ID)/plan'
+      artifactName: 'terraformPlan'
+      publishLocation: 'Container'
+
+- ${{ if eq(parameters['apply'], true)}}:
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+
+- ${{if eq(parameters['destroy'], true)}}:
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'destroy'
+      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+

@@ -1,0 +1,22 @@
+# Terraform-ness
+**/terraform/*
+**/terraform.d/*
+**/.terraform.*
+.terraform/*
+.terraform/*
+
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+**/terraform.plan
+**/tf_plan_changes
+
+# local tfplan file
+**/tfplan 
+
+.DS_Store
+
+# Certs and keys
+**/*.pem
+**/*.srl
