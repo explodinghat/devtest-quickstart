@@ -38,6 +38,18 @@ resource "azurerm_network_security_group" "example" {
   name                = "devtestlab-${var.DEVTEST_ID}-nsg"
   location            = azurerm_resource_group.devtestlab.location
   resource_group_name = azurerm_resource_group.devtestlab.name
+
+    security_rule {
+    name                       = "Allow SSH From Trusted IP"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "${var.ALLOWED_IP}"
+    destination_address_prefix = "*"
+  }
 }
 
 resource "azurerm_virtual_network" "example" {
@@ -50,5 +62,6 @@ resource "azurerm_virtual_network" "example" {
   subnet {
     name           = "devtestlab-${var.DEVTEST_ID}-subnet1"
     address_prefix = "10.0.0.0/24"
+    security_group = azurerm_network_security_group.example.id
   }
 }
