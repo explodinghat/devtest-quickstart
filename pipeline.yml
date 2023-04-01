@@ -48,7 +48,7 @@ steps:
     
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.SourcesDirectory)/plan'
+      pathtoPublish: '$(Build.SourcesDirectory)/$(TF_VAR_DEVTEST_ID)-plan'
       artifactName: 'terraformPlan'
       publishLocation: 'Container'
 
