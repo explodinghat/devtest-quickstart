@@ -30,7 +30,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+    backendServiceArm: '$(AZSub)'
     backendAzureRmResourceGroupName: 'phoenixtech-tfstate-rg'
     backendAzureRmStorageAccountName: 'mwtfstateyqpqj'
     backendAzureRmContainerName: 'core-tfstate'
@@ -44,7 +44,7 @@ steps:
       customCommand: 'plan'
       outputTo: 'file'
       fileName: '$(TF_VAR_DEVTEST_ID)-plan'
-      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+      environmentServiceNameAzureRM: '$(AZSub)'
     
   - task: PublishBuildArtifacts@1
     inputs:
@@ -57,12 +57,12 @@ steps:
     inputs:
       provider: 'azurerm'
       command: 'apply'
-      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+      environmentServiceNameAzureRM: '$(AZSub)'
 
 - ${{if eq(parameters['destroy'], true)}}:
   - task: TerraformTaskV4@4
     inputs:
       provider: 'azurerm'
       command: 'destroy'
-      environmentServiceNameAzureRM: 'Pay-As-You-Go (9d81bd49-f6ee-4775-a938-63fb5e15f2a2)'
+      environmentServiceNameAzureRM: '$(AZSub)'
 
