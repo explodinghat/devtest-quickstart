@@ -15,11 +15,6 @@ parameters:
   type: boolean 
   default: false 
 
-variables:
-  TF_VAR_DEVTEST_ID: "casper"
-  TF_VAR_VNET: "10.0.0.0/24"
-  TF_VAR_SUBNET: "10.0.0.0/24"
-
 name: Terraform Azure
 trigger: none
 pool:
