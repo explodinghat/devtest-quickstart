@@ -77,7 +77,7 @@ resource "azurerm_virtual_network" "example" {
 
   subnet {
     name           = "devtestlab-${var.DEVTEST_ID}-subnet1"
-    address_prefix = ["${var.SUBNET_ADDR}"]
+    address_prefix = var.SUBNET_ADDR
     security_group = azurerm_network_security_group.example.id
   }
 }
