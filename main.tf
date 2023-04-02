@@ -40,7 +40,7 @@ resource "azurerm_dev_test_schedule" "example" {
   resource_group_name = azurerm_resource_group.devtestlab.name
   lab_name            = azurerm_dev_test_lab.example.name
 
-  weekly_recurrence {
+  daily_recurrence {
     time      = "1700"
   }
 
