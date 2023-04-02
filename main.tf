@@ -34,6 +34,22 @@ resource "azurerm_dev_test_policy" "example" {
   threshold           = "5"
   evaluator_type      = "MaxValuePolicy"
 }
+resource "azurerm_dev_test_schedule" "example" {
+  name                = "LabVmAutoStop"
+  location            = azurerm_resource_group.devtestlab.location
+  resource_group_name = azurerm_resource_group.devtestlab.name
+  lab_name            = azurerm_dev_test_lab.example.name
+
+  weekly_recurrence {
+    time      = "1700"
+  }
+
+  time_zone_id = "Universal Time Code"
+  task_type    = "LabVmsShutdownTask"
+
+  notification_settings {
+  }
+}
 resource "azurerm_network_security_group" "example" {
   name                = "devtestlab-${var.DEVTEST_ID}-nsg"
   location            = azurerm_resource_group.devtestlab.location
@@ -56,12 +72,12 @@ resource "azurerm_virtual_network" "example" {
   name                = "devtestlab-${var.DEVTEST_ID}-vnet"
   location            = azurerm_resource_group.devtestlab.location
   resource_group_name = azurerm_resource_group.devtestlab.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = var.VNET_ADDR
   dns_servers         = ["8.8.8.8"]
 
   subnet {
     name           = "devtestlab-${var.DEVTEST_ID}-subnet1"
-    address_prefix = "10.0.0.0/24"
+    address_prefix = var.SUBNET_ADDR
     security_group = azurerm_network_security_group.example.id
   }
 }
